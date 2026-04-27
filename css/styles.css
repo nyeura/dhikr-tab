@@ -1,0 +1,755 @@
+/* =========================================
+   0. LOCAL FONTS (Offline & Privacy)
+   ========================================= */
+
+/* --- OUTFIT (English) --- */
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/Outfit-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/Outfit-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/Outfit-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/Outfit-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- SCHEHERAZADE NEW (Arabic) --- */
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../assets/fonts/ScheherazadeNew-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../assets/fonts/ScheherazadeNew-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../assets/fonts/ScheherazadeNew-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================================
+   1. VARIABLES & RESET
+   ========================================= */
+:root {
+  /* --- PALETTE: "Electric Zen" --- */
+
+  /* Primary Text: Clean White for max contrast against Charcoal */
+  --text-primary: #ffffff;
+
+  /* Secondary Text: The Grey you requested */
+  --text-secondary: #909090;
+
+  /* ACCENT: Neon Lime (#A4FE1B) */
+  --text-accent: #a4fe1b;
+
+  /* Muted Text */
+  --text-muted: rgba(144, 144, 144, 0.5);
+
+  /* UI Variables */
+  --modal-bg: rgba(18, 18, 18, 0.95); /* Deep Charcoal Glass */
+  --modal-border: rgba(164, 254, 27, 0.2); /* Neon border hint */
+  --toggle-bg: rgba(255, 255, 255, 0.1);
+  --toggle-circle: #a4fe1b;
+  --toggle-active: #8ed615; /* Slightly darker lime for active state */
+
+  /* --- FONTS --- */
+  --font-english:
+    "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-arabic: "Scheherazade New", serif;
+}
+
+/* =========================================
+   CUSTOM SELECTION (THEME MATCHING)
+   ========================================= */
+::selection {
+  background-color: var(--text-accent); /* Neon Lime (#A4FE1B) */
+  color: #000000; /* Pure Black text for maximum readability */
+  text-shadow: none; /* Remove glow when highlighting for clarity */
+}
+
+/* Firefox Support */
+::-moz-selection {
+  background-color: var(--text-accent);
+  color: #000000;
+  text-shadow: none;
+}
+
+/* Global Reset & Interaction Polish */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  /* 1. KILL THE BLUE MOBILE TAP BOX */
+  -webkit-tap-highlight-color: transparent;
+
+  /* 2. REMOVE DEFAULT BROWSER FOCUS RINGS (We use custom hover states) */
+  outline: none;
+}
+
+/* Remove dotted outline on Firefox/others */
+button:focus,
+div:focus,
+svg:focus {
+  outline: none;
+}
+
+/* =========================================
+   2. BODY & BACKGROUND LAYERS
+   ========================================= */
+body {
+  font-family: var(--font-english);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 1. THE CANVAS: Pure OLED Black for maximum depth */
+  background-color: #000000;
+
+  /* 2. THE LIGHTING COMPOSITION (Static) */
+  background-image:
+    /*
+       Layer A: THE ELECTRIC CORE (Sharp Light).
+       A tight, intense pillar of light at the bottom.
+       Color: White-Lime Center -> Neon Lime -> Transparent.
+    */
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(220, 255, 180, 0.08) 0%,
+      /* White-Lime Core (Subtle) */ rgba(164, 254, 27, 0.04) 30%,
+      /* Neon Halo (Faint) */ transparent 70%
+    ),
+    /*
+       Layer B: THE AMBIENT GLOW (Atmosphere).
+       Extremely subtle, wide wash to bond the text to the background.
+    */
+    radial-gradient(
+        ellipse 80% 50% at 50% 100%,
+        rgba(164, 254, 27, 0.02) 0%,
+        /* Barely visible Neon Haze */ transparent 100%
+      ),
+    /*
+       Layer C: THE CEILING (Vignette).
+       Deep, heavy shadow from the top to ensure focus remains low.
+    */
+    linear-gradient(180deg, rgba(10, 10, 10, 0.8) 0%, transparent 50%);
+
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  /* Stacking Context */
+  position: relative;
+}
+
+/* Layer 1: Center Watermark Image */
+body::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Responsive Sizing */
+  width: 600px;
+  height: 600px;
+  max-width: 80vw;
+  max-height: 80vh;
+
+  background-image: url("../assets/icons/falesteen.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Layer 2: Texture Overlay */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /*
+     TEXTURE:
+     Updated stroke to %23A4FE1B (The Neon Lime).
+  */
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' stroke='%23A4FE1B' stroke-width='0.15' opacity='0.04'/%3E%3C/g%3E%3C/svg%3E");
+
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#app-container {
+  position: relative;
+  z-index: 3; /* Topmost layer */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dhikr-display {
+  width: 90vw;
+  max-width: 1400px;
+  text-align: center;
+  padding: 2rem;
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* =========================================
+   3. TYPOGRAPHY & COMPONENTS
+   ========================================= */
+
+/* --- ARABIC TEXT --- */
+.arabic-text {
+  font-family: var(--font-arabic);
+  font-weight: 700;
+  font-size: 3rem;
+  background: linear-gradient(180deg, #ffffff 25%, #e2ffab 55%, #a4fe1b 100%);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  /* Layout */
+  line-height: 2;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 1rem;
+
+  /*
+     DUAL-LAYER GLOW FILTER
+     1. Tight shadow: Defines the edges clearly.
+     2. Wide shadow: Creates the "Noor" atmospheric bloom.
+  */
+  filter: drop-shadow(0 0 15px rgba(164, 254, 27, 0.3))
+    drop-shadow(0 0 45px rgba(164, 254, 27, 0.1));
+
+  display: block;
+}
+
+/* --- TRANSLITERATION --- */
+.transliteration {
+  font-family: var(--font-english);
+  color: var(--text-accent);
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+  opacity: 0.9;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* --- TRANSLATION --- */
+.translation {
+  font-family: var(--font-english);
+  color: var(--text-secondary); /* Using #909090 */
+  font-size: 1.4rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  display: block;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- REFERENCE PILL COMPONENT --- */
+.reference {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  /* Pill Shape - Neon styling */
+  background-color: rgba(164, 254, 27, 0.05);
+  border: 1px solid rgba(164, 254, 27, 0.2);
+  border-radius: 999px;
+
+  padding: 0.5rem 1.25rem;
+  margin-top: 0.8rem;
+
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.reference-text {
+  font-family: var(--font-english);
+  color: var(--text-accent);
+  font-size: 0.75rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.info-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  color: #909090; /* Muted Grey initially */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.info-icon:hover {
+  color: var(--text-accent);
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 5px rgba(164, 254, 27, 0.5));
+}
+
+/* =========================================
+   4. UI CONTROLS & MODALS (RESPONSIVE)
+   ========================================= */
+
+/* --- SETTINGS BUTTON --- */
+#settings-btn {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+  cursor: pointer;
+  z-index: 10;
+  transform-origin: center center;
+  transition:
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s ease;
+}
+
+#settings-btn:hover {
+  opacity: 1;
+  transform: rotate(90deg) scale(1.1);
+}
+
+#settings-btn:active {
+  transform: rotate(180deg) scale(0.9);
+}
+
+#settings-btn svg {
+  fill: none;
+  stroke: var(--text-accent);
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+  stroke-width: 1.5;
+}
+
+/* --- SHARED MODAL STYLES --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+
+  /* Default Desktop Sizing */
+  width: min(400px, 90vw);
+  padding: 2.5rem 2rem;
+
+  border-radius: 28px;
+  color: var(--text-primary);
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-overlay.open .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-accent);
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 1.8rem;
+  line-height: 1;
+  opacity: 0.7;
+  color: var(--text-primary);
+  transition: opacity 0.2s;
+}
+
+.close-btn:hover {
+  opacity: 1;
+}
+
+/* --- SETTINGS ROWS --- */
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* --- RESPONSIVE TOGGLE SWITCH --- */
+.switch {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+
+  /* Desktop Dimensions */
+  width: 52px;
+  height: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--toggle-bg);
+  /* Smoother Physics */
+  transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* The Knob */
+.slider:before {
+  position: absolute;
+  content: "";
+  /* Desktop Knob Size */
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 3px;
+
+  background-color: #555;
+  transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+input:checked + .slider {
+  background-color: rgba(164, 254, 27, 0.15);
+  border-color: var(--toggle-active);
+}
+
+input:checked + .slider:before {
+  /* Desktop Travel */
+  transform: translateX(22px);
+  background-color: var(--toggle-active);
+  box-shadow: 0 0 10px rgba(164, 254, 27, 0.4);
+}
+
+/* =========================================
+   MOBILE OPTIMIZATIONS (Max Width 600px)
+   ========================================= */
+@media (max-width: 600px) {
+  /* 1. Shrink the Modal Container */
+  .modal-content {
+    padding: 1.5rem; /* Tighter padding */
+    width: 85vw;
+  }
+
+  /* 2. Scale Down Header Text */
+  .modal-header {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .close-btn {
+    font-size: 1.5rem;
+  }
+
+  /* 3. Scale Down Row Text */
+  .setting-row {
+    font-size: 0.9rem; /* Smaller, cleaner text */
+    margin-bottom: 1.2rem;
+  }
+
+  /* 4. RE-CALCULATE TOGGLE SWITCH FOR MOBILE */
+  .switch {
+    width: 42px; /* Smaller Width */
+    height: 24px; /* Smaller Height */
+  }
+
+  .slider:before {
+    height: 18px; /* Smaller Knob */
+    width: 18px;
+    left: 3px; /* Tighter Spacing */
+    bottom: 2px;
+  }
+
+  input:checked + .slider:before {
+    /* Mobile Travel Distance */
+    transform: translateX(18px);
+  }
+}
+
+/* --- INFO MODAL SPECIFIC --- */
+.info-content-wrapper {
+  width: min(500px, 90vw);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.info-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* 1. The Arabic Text (Hero) */
+.modal-arabic-text {
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.8;
+  direction: rtl;
+  opacity: 0.8;
+  color: var(--text-accent);
+  margin: 0;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(164, 254, 27, 0.15); /* Neon Divider */
+  width: 100%;
+}
+
+/* 2. The Context Text (Body) */
+.context-text {
+  font-family: var(--font-english);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary); /* Grey #909090 */
+  font-weight: 300;
+
+  /* Left align English text for readability, or center if short */
+  text-align: left;
+  width: 100%;
+  margin: 0;
+}
+
+/* 3. The Source Pill (Footer/Signature) */
+.source-badge {
+  display: inline-block;
+
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(164, 254, 27, 0.25);
+  border-radius: 999px;
+
+  font-family: var(--font-english);
+  color: var(--text-secondary); /* Muted Grey */
+  font-size: 0.7rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem; /* Push it down slightly */
+}
+
+/* =========================================
+   5. ANIMATIONS
+   ========================================= */
+@keyframes luxuriousFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   6. RESPONSIVENESS (Grouped by Breakpoint)
+   ========================================= */
+
+/* --- LARGE LAPTOPS / SMALL DESKTOPS (Max 1200px) --- */
+@media (max-width: 1200px) {
+  .arabic-text {
+    font-size: 2.8rem;
+    line-height: 1.9;
+  }
+  .translation {
+    font-size: 1.3rem;
+    max-width: 700px;
+  }
+}
+
+/* --- TABLETS / PORTRAIT IPADS (Max 992px) --- */
+@media (max-width: 992px) {
+  #dhikr-display {
+    padding: 1.5rem;
+  }
+  .arabic-text {
+    font-size: 2.4rem;
+    line-height: 1.8;
+  }
+  .transliteration {
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+  }
+  .translation {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Reference Components */
+  .reference {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.5rem 0.4rem 1rem;
+    letter-spacing: 1.5px;
+  }
+}
+
+/* --- MOBILE DEVICES (Max 768px) --- */
+@media (max-width: 768px) {
+  #dhikr-display {
+    padding: 1rem;
+    width: 100vw;
+  }
+
+  /* Typography */
+  .arabic-text {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    padding-top: 10px;
+    margin-bottom: 1.2rem;
+  }
+  .transliteration {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+  }
+  .translation {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    padding: 0 10px;
+  }
+
+  /* Reference Components */
+  .reference {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.4rem 0.3rem 0.8rem;
+    letter-spacing: 1px;
+  }
+  .info-icon {
+    width: 1rem;
+    height: 1rem;
+    /* font-size ignored on div, handled by width/height */
+  }
+
+  /* Info Modal Specifics */
+  .info-content-wrapper {
+    padding: 2rem;
+    width: 90vw;
+  }
+  .modal-arabic-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .context-text {
+    font-size: 0.8rem;
+    text-align: left; /* Ensure left align on mobile for readability */
+  }
+}
